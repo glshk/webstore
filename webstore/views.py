@@ -1,19 +1,19 @@
 from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_user
+from flask_login import login_user, current_user
 
 from webstore import app
 from webstore.models import *
 from webstore.forms import *
 
-# @app.route('/')
+# @app.route('/', methods=['POST', 'GET'])
 # def index():
 #     return 'Hello World!'
 
-# @app.route('/')
-# def index():
-#     # products = Product.query.filter(Product.id<=4)
-#     products = Product.query.order_by(Product.price).limit(4)
-#     return render_template('index1.html', products=products)
+@app.route('/')
+def index():
+    # products = Product.query.filter(Product.id<=4)
+    products = Product.query.order_by(Product.price).limit(4)
+    return render_template('index1.html', products=products)
 
 def help_show_user(username):
     user = User.query.filter_by(username=username).first_or_404()
@@ -88,8 +88,8 @@ def products():
 @app.route('/products/<category>', methods=["GET", "POST"])
 def products_cat(category):
     products = Product.query.join(Category.products).filter(Category.name==category)
-    return products
-    # return render_template('products.html', products=products)
+    # return products
+    return render_template('products.html', products=products)
 
 @app.route('/products/sort', methods=["GET", "POST"])
 def sorted():

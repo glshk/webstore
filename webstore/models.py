@@ -136,5 +136,5 @@ class InStock(db.Model):
 #
 #     password = db.Column(db.String(80))
 
-# db_adapter = SQLAlchemyAdapter(db, User, UserAuthClass=UserAuth)
-# user_manager = UserManager(db_adapter, app)
+db_adapter = SQLAlchemyAdapter(db, User, UserAuthClass=UserAuth)
+user_manager = UserManager(db_adapter, app)

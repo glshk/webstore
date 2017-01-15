@@ -1,3 +1,3 @@
 from webstore import app
 
-app.run()
+app.run(debug = True, port=33508)
