@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}
+Products
+{% endblock %}
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+	$(function() {
+		var sort = function() {
+			$.get('{{ url_for('products') }}/women',
+				function(data) {
+					{{products}}=data
+				)
+		
+		}
+	
+	
+		$('a#women').bind('click', sort);
+		
+		
+
+
+	}
+
+
+
+</script>
+
+
+			<div class="content">
+	<div class="product-model">	 
+	 <div class="container">
+		<h2>Our Products</h2>	
+		<div class="col-md-9 product-model-sec">
+{% for product in products %}		
+		
+					 <a href="{{url_for('single_id', id=product.id)}}"><div class="product-grid">
+						<div class="more-product"><span> </span></div>						
+						<div class="product-img b-link-stripe b-animate-go  thickbox">
+							<img src="{{ url_for('static', filename='images/jeans')}}/{{product.image}}.jpg" class="img-responsive" alt="">
+							<div class="b-wrapper">
+							<h4 class="b-animate b-from-left  b-delay03">							
+							<button> + </button>
+							</h4>
+							</div>
+						</div>
+					</a>					
+						<div class="product-info simpleCart_shelfItem">
+							<div class="product-info-cust prt_name">
+								<h4>Product "{{ product.name }}"</h4>								
+								<span class="item_price">${{ product.price }}<!-- ₴ --></span>
+								<!--
+								<div class="ofr">
+								  <p class="pric1"><del>Rs 280</del></p>
+						          <p class="disc">[12% Off]</p>
+								</div>
+								-->
+								<input type="text" class="item_quantity" value="1" />
+								<input type="button" class="item_add items" value="+">
+								<div class="clearfix"> </div>
+							</div>												
+						</div>
+					</div>
+				{% endfor %} 	
+				</div>	
+				{% block menu %}
+			<div class="rsidebar span_1_of_left">
+				 <section  class="sky-form">
+					 <div class="product_right">
+						 <h4 class="m_2"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>Categories</h4>
+						 <div class="tab1">
+							 <ul class="place">
+							 <form method="POST" action="{{ url_for('products')}}">								
+								 <li class="sort"><a href="{{ url_for('products') }}" name="all"><p>All Jeans</p></a></li>
+									<div class="clearfix"> </div>
+							  </ul>
+					      </div>						  
+						  <div class="tab2">
+							 <ul class="place">								
+								 <li class="sort"><a href=# id="women"><p>Women Jeans</p></a></li>
+									<div class="clearfix"> </div>
+							  </ul>
+					      </div>
+						  <div class="tab3">
+							 <ul class="place">								
+								 <li class="sort"><a href="{{ url_for('products_cat', category='men') }}" name="men"><p>Men Jeans</p></a></li>
+									<div class="clearfix"> </div>
+							  </form>
+							  </ul>
+
+					      </div>
+				 
+				 </section>
+
+				   <section  class="sky-form">
+						<h4><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>Brand</h4>
+							<div class="row row1" style="height:auto">
+								<form action="{{ url_for('sorted') }}" method="POST" >
+									<!--
+									## 
+									-->
+								<div class="col col-4">
+								
+									<label class="checkbox"><input type="checkbox" name="brand" value=1 checked=""><i></i>Levis</label>
+								
+									<label class="checkbox"><input type="checkbox" name="brand" value=2 checked=""><i></i>Mustang</label>
+									<label class="checkbox"><input type="checkbox" name="brand" value=3 checked=""><i></i>Diesel</label>
+									<label class="checkbox"><input type="checkbox" name="brand" value=4 checked=""><i></i>Armani</label>
+									<label class="checkbox"><input type="checkbox" name="brand" value=5 checked=""><i></i>PepeJeans</label>
+									<label class="checkbox"><input type="checkbox" name="brand" value=6 checked=""><i></i>Guess</label>
+									<label class="checkbox"><input type="checkbox" name="brand" value=7 checked=""><i></i>Dockers</label>
+								<div class="col col-4">									
+									<input type="submit" value="Apply">
+								</div>
+								</form>
+								</div>
+							</div>
+				   </section>				   
+			 </div>				 
+	      </div>
+		  {% endblock %}
+		</div>
+</div>
+<!---->
+</div>
+{% endblock %}
+	

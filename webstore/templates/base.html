@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>{% block title %}Index{% endblock %} - WebStore</title>
+<link href="{{ url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet" type="text/css" media="all"/>
+<link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ url_for('static', filename='css/owl.carousel.css')}}" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Swim Wear Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-3.1.1.min.js')}}"></script>
+	<!-- cart -->
+		<script src="{{ url_for('static', filename='js/simpleCart.min.js')}}"> </script>
+	<!-- cart -->
+	<script src="{{ url_for('static', filename='js/imagezoom.js')}}"></script>
+
+						<!-- FlexSlider -->
+  <script defer src="{{ url_for('static', filename='js/jquery.flexslider.js')}}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/flexslider.css')}}" type="text/css" media="screen" />
+<!-- the jScrollPane script -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.jscrollpane.min.js')}}"></script>
+		<script type="text/javascript" id="sourcecode">
+			$(function()
+			{
+				$('.scroll-pane').jScrollPane();
+			});
+		</script>
+<!-- //the jScrollPane script -->
+<link href="{{ url_for('static', filename='css/form.css')}}" rel="stylesheet" type="text/css" media="all" />
+		<!-- the mousewheel plugin -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.mousewheel.js')}}"></script>
+
+<script>
+// Can also be used with $(document).ready()
+$(window).load(function() {
+  $('.flexslider').flexslider({
+    animation: "slide",
+    controlNav: "thumbnails"
+  });
+});
+</script>
+{% block head %}{% endblock %}	
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+</head>
+<body>
+	<!--header-->
+		<div class="header">
+			<div class="header-top">
+			<div class="container">
+			<!--
+				 <div class="lang_list">
+					<select tabindex="4" class="dropdown1">
+						<option value="" class="label" value="">En</option>
+						<option value="1">English</option>
+						<option value="2">French</option>
+						<option value="3">German</option>
+					</select>
+				</div>
+			-->
+				<div class="top-right">
+				<ul>
+					{% if current_user.is_authenticated == False %}
+					<li class="text"><a href="{{ url_for('login') }}">login</a></li>
+					{% else %}
+					<li class="text"><a href="{{ url_for('products') }}">logout</a></li>					
+					{% endif %}
+					<li><div class="cart box_1">
+							<a href="checkout">
+								 <span class="simpleCart_total"> $0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span>)
+							</a>	 
+							<p><a href="javascript:;" class="simpleCart_empty">Empty cart</a></p>
+							<div class="clearfix"> </div>
+						</div></li>
+				</ul>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			</div>
+			<div class="header-bottom">
+					<div class="container">
+<!--/.content-->
+<div class="content white">
+	<nav class="navbar navbar-default" role="navigation">
+	    <div class="navbar-header">
+	        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+	        </button>
+	        <h1 class="navbar-brand"><a  href="/">Jeans web store</a></h1>
+	    </div>
+	    <!--/.navbar-header-->
+	
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	        <ul class="nav navbar-nav">
+			<li><a href="/">Home</a></li>
+		        <li class="dropdown">
+		            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Men<b class="caret"></b></a>
+		            <ul class="dropdown-menu">
+			            <div class="row">
+				            <div class="col-sm-4">
+					            <ul class="multi-column-dropdown">
+						            <li><a  class="list" href="{{ url_for('products_cat', category='men') }}">Men</a></li>
+						            <li><a class="list1" href="{{ url_for('products') }}">Diesel</a></li>
+						            <li><a class="list1" href="{{ url_for('products') }}">Dockers</a></li>
+						            <li><a class="list1" href="{{ url_for('products') }}">Guess</a></li>
+					            </ul>
+				            </div>
+				            
+			            </div>
+		            </ul>
+		        </li>
+		        <li class="dropdown">
+		            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Women<b class="caret"></b></a>
+		            <ul class="dropdown-menu">
+			            <div class="row">
+				            <div class="col-sm-4">
+					           <ul class="multi-column-dropdown">
+						            <li><a class="list" href="{{ url_for('products_cat', category='women') }}">Women</a></li>
+						            <li><a class="list1" href="{{ url_for('products') }}">PepeJeans</a></li>
+						            <li><a class="list1" href="{{ url_for('products') }}">Guess</a></li>
+						            <li><a class="list1" href="{{ url_for('products') }}">Armani</a></li>
+						            <li><a class="list1" href="{{ url_for('products') }}">Dockers</a></li>
+						            <li><a class="list1" href="{{ url_for('products') }}">Levis</a></li>
+					            </ul>
+				            </div>
+				           
+			            </div>
+		            </ul>
+		        </li>
+		        
+				<li><a href="{{ url_for('products') }}">In stock</a></li>
+	        </ul>
+	    </div>
+	    <!--/.navbar-collapse-->
+	</nav>
+	<!--/.navbar-->
+</div>
+			
+					</div>
+				</div>
+			</div>
+			<!--header-->
+{% block content %}		
+{% endblock %}
+	<!--footer-->
+		<div class="footer-section">
+			<div class="container">
+				<div class="footer-grids">
+					<div class="col-md-2 footer-grid">
+					<h4>company</h4>
+					<ul>
+						<li><a href="products.html">Products</a></li>
+						<li><a href="#">Work Here</a></li>
+						<li><a href="#">Team</a></li>
+
+					</ul>
+				</div>
+					<div class="col-md-2 footer-grid">
+					<h4>service</h4>
+					<ul>
+						<li><a href="#">Support</a></li>
+						<li><a href="#">FAQ</a></li>
+						<li><a href="contact.html">Contact Us</a></li>
+					</ul>
+					</div>
+					<div class="col-md-2 footer-grid">
+					<h4>order & returns</h4>
+					<ul>
+						<li><a href="#">Order Status</a></li>
+						<li><a href="#">Shipping Policy</a></li>
+						<li><a href="#">Return Policy</a></li>
+					</ul>
+					</div>
+					<div class="col-md-2 footer-grid">
+					<h4>legal</h4>
+					<ul>
+						<li><a href="#">Terms and Conditions</a></li>
+					</ul>
+					</div>
+					<div class="col-md-4 footer-grid1">
+					<div class="social-icons">
+						<a href="#"><i class="icon"></i></a>
+						<a href="#"><i class="icon1"></i></a>
+						<a href="#"><i class="icon2"></i></a>
+						<a href="#"><i class="icon3"></i></a>
+						<a href="#"><i class="icon4"></i></a>
+					</div>
+					<p>Copyright &copy; 2017 Jeans Web Store. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
+					</div>
+				<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+	<!--footer-->
+		
+</body>
+</html>

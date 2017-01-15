@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+		<div class="banner-section">
+			<div class="container">
+				<div class="banner-grids">
+					<div class="col-md-6 banner-grid">
+						<h2>the latest collections</h2>
+						<p>We are happy to welcome You at our store.<br>
+						Here you can find the best choices of jeans for You and your couple, friends, family, neighbours and anyone else You need to find for.<br>
+						Have a good time!</p>
+						<a href="products" class="button"> shop now </a>
+					</div>
+				<div class="col-md-6 banner-grid1">
+						<img src="static/images/pp2.jpg" class="img-responsive" alt=""/>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		</div>
+
+		<div class="gallery">
+			<div class="container">
+			<h3>Check Our Best Prices</h3>
+			<div class="gallery-grids">
+			
+				{% for product in products %}
+
+				<div class="col-md-3 gallery-grid ">
+					<a href="/single-{{ product.id }}"><img src="static/images/jeans/{{product.image}}.jpg" class="img-responsive" alt=""/>
+					<div class="gallery-info">
+					<div class="quick">
+					<p><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> view</p>
+					</div>
+					</div></a>
+					<div class="galy-info">
+						<p>{{ product.name }}</p>
+						<div class="galry">
+						<div class="prices">
+						<h5 class="item_price">${{ product.price }}<!-- ₴ --></h5>
+						</div>
+					<!--
+					<div class="rating">
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+								</div>
+					-->			
+						
+					<div class="clearfix"></div>
+					</div>
+					</div>
+				</div>
+   
+{% endfor %}
+			</div>
+		</div>
+		</div>
+{% endblock %}
