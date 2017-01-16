@@ -19,10 +19,9 @@ class User(db.Model):
     orders = db.relationship('Order', backref='user')
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users'))
 
-    def __init__(self, first_name, last_name, username, email, phone):
+    def __init__(self, first_name, last_name, email, phone):
         self.first_name=first_name
         self.last_name=last_name
-        self.username=username
         self.email=email
         self.phone=phone
 
@@ -41,6 +40,9 @@ class User(db.Model):
     ## Method required by flask-login.
     def get_id(self):
         return self.id
+
+    def has_roles(self, *args):
+        return set(args).issubset({role.name for role in self.roles})
 
     def __repr__(self):
         return 'User %s %s' % (self.first_name, self.last_name)
@@ -137,4 +139,3 @@ class InStock(db.Model):
 #     password = db.Column(db.String(80))
 
 db_adapter = SQLAlchemyAdapter(db, User, UserAuthClass=UserAuth)
-user_manager = UserManager(db_adapter, app)
