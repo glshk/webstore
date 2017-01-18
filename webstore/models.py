@@ -48,6 +48,7 @@ class User(db.Model):
         return 'User %s %s' % (self.first_name, self.last_name)
 
 
+
 class UserRoles(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id, ondelete='CASCADE'))
@@ -69,7 +70,7 @@ class Order(db.Model):
     oid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date = db.Column(db.DateTime)
     state = db.Column(db.Boolean)
-    # total_price = db.Column(db.Integer)
+    total_price = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
