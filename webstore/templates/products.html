@@ -51,7 +51,7 @@ Products
 						<div class="product-info simpleCart_shelfItem">
 							<div class="product-info-cust prt_name">
 								<h4>Product "{{ product.name }}"</h4>								
-								<span class="item_price">${{ product.price }}<!-- ₴ --></span>
+								<span class="item_price">${{ prices[(product.id-1)%(prices|length)] }}<!-- ₴ --></span>
 								<!--
 								<div class="ofr">
 								  <p class="pric1"><del>Rs 280</del></p>

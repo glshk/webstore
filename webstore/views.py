@@ -14,9 +14,13 @@ from webstore.forms import LoginForm, SUpForm
 @app.route('/')
 def index():
     # products = Product.query.filter(Product.id<=4)
-    products = Product.query.order_by(Product.price).limit(4)
-    return render_template('index1.html', products=products)
+    products = Product.query.join(InStock.products).filter(InStock.size_id==1).order_by(InStock.price).limit(4)
+    prices = []
+    for product in products:
+        prices.append(InStock.query.join(InStock.products).filter(Product.id == product.id).first().price)
+    return render_template('index1.html', products=products, prices=prices)
 
+'''
 def help_show_user(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('show_one.html', user=user)
@@ -52,7 +56,7 @@ def random():
     import random
     orders = Order.query.filter(Order.oid==random.randint(1,7))
     return render_template('show_orders.html', orders=orders)
-
+'''
 
 
 
@@ -60,17 +64,19 @@ def random():
 def single():
     import random
     id = 3
-    product = Product.query.filter(Product.id==id).first()
+    product = Product.query.join(InStock.products).filter(Product.id==id).first()
     sizes = Size.query.join(InStock.sizes).filter(InStock.prod_id==id).all()
     category = Category.query.join(Product.category).filter(Product.id==id).first()
-    return render_template('single.html', product=product, sizes=sizes, category=category)
+    price = InStock.query.filter(InStock.prod_id==id).first().price
+    return render_template('single.html', product=product, sizes=sizes, category=category, price=price)
 
 @app.route('/single-<id>')
 def single_id(id):
-    product = Product.query.filter(Product.id==id).first()
-    sizes = Size.query.join(InStock.sizes).filter(InStock.prod_id==id).filter(InStock.amount>0).all()
-    category = Category.query.join(Product.category).filter(Product.id==id).first()
-    return render_template('single.html', product=product, sizes=sizes, category=category)
+    product = Product.query.join(InStock.products).filter(Product.id == id).first()
+    sizes = Size.query.join(InStock.sizes).filter(InStock.prod_id == id).all()
+    category = Category.query.join(Product.category).filter(Product.id == id).first()
+    price = InStock.query.filter(InStock.prod_id == id).first().price
+    return render_template('single.html', product=product, sizes=sizes, category=category, price=price)
 
 
 
@@ -83,15 +89,21 @@ def single_id(id):
 
 @app.route('/products')
 def products():
-    products = Product.query.all()
-    return render_template('products.html', products=products)
+    products = Product.query.join(InStock.products).filter(InStock.size_id==1).all()
+    prices = []
+    for product in products:
+        prices.append(InStock.query.join(InStock.products).filter(Product.id == product.id).first().price)
+    return render_template('products.html', products=products, prices=prices)
 
 
 @app.route('/products/<category>', methods=["GET", "POST"])
 def products_cat(category):
     products = Product.query.join(Category.products).filter(Category.name==category)
+    prices = []
+    for product in products:
+        prices.append(InStock.query.join(InStock.products).filter(Product.id==product.id).first().price)
     # return products
-    return render_template('products.html', products=products)
+    return render_template('products.html', products=products, prices=prices)
 
 @app.route('/products/sort', methods=["GET", "POST"])
 def sorted():
@@ -103,7 +115,10 @@ def sorted():
         #     brands1.append(b)
         # print(brands1)
         products = Product.query.join(Brand.products).filter(Brand.id.in_(set(brands))).all()
-        return render_template('products.html', products=products, brands=brands)
+        prices = []
+        for product in products:
+            prices.append(InStock.query.join(InStock.products).filter(Product.id == product.id).first().price)
+        return render_template('products.html', products=products, brands=brands, prices=prices)
 
 
 

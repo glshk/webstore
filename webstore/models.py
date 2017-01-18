@@ -69,7 +69,7 @@ class Order(db.Model):
     oid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date = db.Column(db.DateTime)
     state = db.Column(db.Boolean)
-    total_price = db.Column(db.Integer)
+    # total_price = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
@@ -94,7 +94,7 @@ class Size(db.Model):
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(200))
-    price = db.Column(db.Integer)
+    # price = db.Column(db.Integer)
     description = db.Column(db.String)
 
     brand_id = db.Column(db.Integer, db.ForeignKey(Brand.id))
@@ -131,11 +131,13 @@ class InStock(db.Model):
     sizes = db.relationship(Size, backref='instock')
 
     amount = db.Column(db.Integer)
+    price = db.Column(db.Integer)
 
-# class Password(db.Model):
-#     username = db.Column(db.String(80), db.ForeignKey(User.username), primary_key=True, unique=True)
-#     user = db.relationship(User, backref='password')
-#
-#     password = db.Column(db.String(80))
+    def __init__(self, product, size, amount, price):
+        self.products = product
+        self.sizes = size
+        self.amount = amount
+        self.price = price
+
 
 db_adapter = SQLAlchemyAdapter(db, User, UserAuthClass=UserAuth)

@@ -37,7 +37,7 @@
 						<p>{{ product.name }}</p>
 						<div class="galry">
 						<div class="prices">
-						<h5 class="item_price">${{ product.price }}<!-- ₴ --></h5>
+						<h5 class="item_price">${{ prices[(product.id-1)%(prices|length)] }}<!-- ₴ --></h5>
 						</div>
 					<!--
 					<div class="rating">
