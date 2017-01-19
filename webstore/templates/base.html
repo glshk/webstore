@@ -144,7 +144,7 @@ $(window).load(function() {
 		            </ul>
 		        </li>
 		        
-				<li><a href="{{ url_for('products') }}">In stock</a></li>
+				<li><a href="{{ url_for('products') }}">All products</a></li>
 
 {% if current_user.is_authenticated %}
 	{% if current_user.has_roles('admin') %}

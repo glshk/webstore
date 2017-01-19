@@ -77,8 +77,9 @@ def single():
     product = Product.query.join(InStock.products).filter(Product.id==id).first()
     sizes = Size.query.join(InStock.sizes).filter(InStock.prod_id==id).all()
     category = Category.query.join(Product.category).filter(Product.id==id).first()
-    price = InStock.query.filter(InStock.prod_id==id).first().price
-    return render_template('single.html', product=product, sizes=sizes, category=category, price=price)
+    # price = InStock.query.filter(InStock.prod_id==id).first().price
+    # brand = Brand.query.join(Product.brand).first()
+    return render_template('single.html', product=product, sizes=sizes, category=category)
 
 @app.route('/single-<id>')
 def single_id(id):

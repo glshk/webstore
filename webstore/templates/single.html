@@ -73,7 +73,7 @@ $(window).load(function() {
 								
 							<div class="galry">
 								<div class="prices">
-									<h5 class="item_price">${{ price }}<!-- ₴ --></h5>
+									<h5 class="item_price">${{ product.get_price() }}<!-- ₴ --></h5>
 								</div>
 								
 								<div class="clearfix"></div>
@@ -87,7 +87,23 @@ $(window).load(function() {
 							</div>
 					</div>
 					<div class="panel-group collpse" id="accordion" role="tablist" aria-multiselectable="true">
-					  <div class="panel panel-default" style="	width: 65%; padding: 13px; outline: none; border: none;">
+					  <div class="panel panel-default" style="	 padding: 13px; width: 65%; outline: none; border: none;">
+						<div class="panel-heading" role="tab" id="headingOne">
+						  <h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								Brand
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						  <div class="panel-body" style="padding-top:0px; padding-bottom:0px">
+										<p>{{ product.get_brand().name }}
+										<p>{{ product.get_brand().description }}
+										<p>Super-duper-mega-cool panties
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel panel-default" style="	 padding: 13px; width: 65%; outline: none; border: none;">
 						<div class="panel-heading" role="tab" id="headingOne">
 						  <h4 class="panel-title">
 							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -96,7 +112,7 @@ $(window).load(function() {
 						  </h4>
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-						  <div class="panel-body">
+						  <div class="panel-body" style="padding-top:0px; padding-bottom:0px">
 										<p>{{ product.description }}
 										<p>Super-duper-mega-cool panties
 						  </div>
@@ -104,6 +120,7 @@ $(window).load(function() {
 					  </div>
 					</div>	
 					<div class="clearfix"> </div>
+					</div>
 				</div>
 			</div>
 		</div>

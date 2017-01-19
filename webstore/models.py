@@ -114,6 +114,10 @@ class Product(db.Model):
         price = InStock.query.join(Product.instock).filter_by(prod_id=self.id).first().price
         return price
 
+    def get_brand(self):
+        brand = Brand.query.join(Product.brand).filter(Brand.id==self.brand_id).first()
+        return brand
+
 
 class OrderProducts(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey(Order.oid), primary_key=True)
