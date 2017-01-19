@@ -110,6 +110,9 @@ class Product(db.Model):
     #     self.name = name
     #     self.price = price
     #     self.description = description
+    def get_price(self):
+        price = InStock.query.join(Product.instock).filter_by(prod_id=self.id).first().price
+        return price
 
 
 class OrderProducts(db.Model):

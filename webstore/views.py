@@ -1,15 +1,25 @@
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, g, session, jsonify
 from flask_login import login_user, logout_user, current_user
 from flask_user import roles_required, UserMixin
+import os
 
 from webstore import app
 from webstore.models import *
 from webstore.forms import LoginForm, SUpForm
+from webstore.cart import Cart
 
 
 # @app.route('/', methods=['POST', 'GET'])
 # def index():
 #     return 'Hello World!'
+
+@app.before_request
+def before_request():
+    print(session)
+    g.user = current_user
+    if "cart" not in session:
+        session["cart"] = {}
+    g.cart = Cart(session["cart"])
 
 @app.route('/')
 def index():
@@ -179,9 +189,72 @@ def register():
 
 
 
-@app.route('/checkout')
-def checkout():
-    return render_template('checkout.html')
+@app.route('/cart')
+def cart():
+    return render_template('cart.html', cart=g.cart.getProductData())
+
+@app.route('/add_to_cart', methods=['POST'])
+def addToCart():
+    product = Product.query.join(InStock.products).filter_by(id=int(request.form["productId"])).first()
+    # price = InStock.query.join(InStock.products).filter_by(id=product.id).first().price
+    g.cart.addToCart(product.id, product.get_price())
+    session["cart"] = g.cart.items
+
+    print(session)
+    return jsonify(status="success")
+
+@app.route('/update_cart', methods=['GET', 'POST'])
+def updateCart():
+    g.cart.updateQuantity(int(request.form["id"]),
+                          int(request.form["quantity"])
+    )
+    session["cart"] = g.cart.items
+    session.modified = True
+    app.save_session(session)
+
+    product = Product.query.filter_by(id=int(request.form["id"])).first()
+    return jsonify(total=product.get_price() *
+                   int(request.form["quantity"]))
+
+# @app.route('/check_stock', methods=['GET', 'POST'])
+# def checkStock():
+#     product = Product.query.filter_by(id=int(request.form["id"])).first()
+#     return jsonify(stock=product.stock)
+
+@app.route('/get_cart_total', methods=['GET', 'POST'])
+def getCartTotal():
+    total = g.cart.getTotal()
+    return jsonify(total=round(total, 2))
+
+
+@app.route('/delete_from_cart', methods=['POST'])
+def deleteFromCart():
+    g.cart.deleteFromCart(int(request.form['id']))
+    session["cart"] = g.cart.items
+    return jsonify(status="ok")
+
+@app.route('/place_order', methods=["POST"])
+def placeOrder():
+    order = Order()
+    order.date = datetime.datetime.now()
+    order.state = True
+    order.total_price = g.cart.getTotal()
+    order.user = g.user
+    db.session.add(order)
+    db.session.commit()
+
+    # Now add the products in the cart.
+    for product_id in g.cart.get_products_ids():
+        db.session.add(OrderProducts(order=order,
+                                     prod_id=product_id,
+                                     size_id=3,
+                                     amount=g.cart.get_quantity_by_id(product_id)))
+    db.session.commit()
+
+    # Reset the cart.
+    session["cart"] = {}
+
+    return jsonify(status="ok")
 
 
 @app.route('/admin')

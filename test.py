@@ -88,7 +88,7 @@ class Order(db.Model):
     oid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date = db.Column(db.DateTime)
     state = db.Column(db.Boolean)
-    # total_price = db.Column(db.Integer)
+    total_price = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
@@ -284,6 +284,7 @@ def build_sample_db():
         order.user_id = user.id
         tmp = int(1000*random.random())  # random number between 0 and 1000:
         order.date = datetime.datetime.now() - datetime.timedelta(days=tmp)
+        order.total_price = 0
         order.state = random.choice([True, False])
         order_list.append(order)
         db.session.add(order)
@@ -295,16 +296,16 @@ def build_sample_db():
         db.session.add(user_auth)
 
     for order in order_list:
-
         i = random.randint(1, 3)
         for j in range(1, i+1):
             orderproduct = OrderProducts()
             orderproduct.order = order
             orderproduct.prod_id = i*3+j
             orderproduct.size_id = j+1
-            k = random.randint(1,5)
+            k = random.randint(1,3)
             orderproduct.amount = k
             price = InStock.query.filter(InStock.prod_id == i*3+j).filter(InStock.size_id == j+1).first().price
+            order.total_price += price*k
             db.session.add(orderproduct)
 
     db.session.commit()

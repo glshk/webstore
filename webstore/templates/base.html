@@ -77,10 +77,12 @@ $(window).load(function() {
 					<li class="text"><a href="{{ url_for('logout') }}">logout</a></li>					
 					{% endif %}
 					<li><div class="cart box_1">
-							<a href="checkout">
+							<a href="{{ url_for('cart') }}">
 								 <span class="simpleCart_total"> $0.00 </span> (<span id="simpleCart_quantity" class="simpleCart_quantity"> 0 </span>)
 							</a>	 
+							<!--
 							<p><a href="javascript:;" class="simpleCart_empty">Empty cart</a></p>
+							-->
 							<div class="clearfix"> </div>
 						</div></li>
 				</ul>
@@ -145,8 +147,8 @@ $(window).load(function() {
 				<li><a href="{{ url_for('products') }}">In stock</a></li>
 
 {% if current_user.is_authenticated %}
-	{% if current_user.name == "Admin" %}
-				<li><a href="{{ url_for('login') }}">Go Administrate</a></li>
+	{% if current_user.has_roles('admin') %}
+				<li><a href="{{ url_for('admin') }}">Go Administrate</a></li>
 	{% endif %}
 {% endif %}
 

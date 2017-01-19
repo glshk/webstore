@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block title %}Cart{% endblock %}
+{% block head %}
+<link href="static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all"/>
+<link href="static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="static/css/owl.carousel.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Swim Wear Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="static/js/jquery.min.js"></script>
+<!-- cart -->
+		<script src="static/js/simpleCart.min.js"> </script>
+	<!-- cart -->
+<script type="text/javascript" src="static/js/bootstrap-3.1.1.min.js"></script>
+<script src="static/js/imagezoom.js"></script>
+
+						<!-- FlexSlider -->
+  <script defer src="static/js/jquery.flexslider.js"></script>
+<link rel="stylesheet" href="static/css/flexslider.css" type="text/css" media="screen" />
+
+<script>
+// Can also be used with $(document).ready()
+$(window).load(function() {
+  $('.flexslider').flexslider({
+    animation: "slide",
+    controlNav: "thumbnails"
+  });
+});
+</script>
+{% endblock %}
+{% block content %}
+<!-- checkout -->
+<div class="content">
+<div class="cart-items">
+	<div class="container">
+			 <h2>My Shopping Bag</h2>
+				{% for product in cart %}
+				
+				<script>$(document).ready(function(c) {
+					$('.close1').on('click', function(c){
+						$('.cart-header').fadeOut('slow', function(c){
+							$('.cart-header').remove();
+						});
+						});	  
+					});
+			   </script>
+			 <div class="cart-header">
+				 <div class="close1"> </div>
+				 <div class="cart-sec simpleCart_shelfItem">
+						<div class="cart-item cyc">
+							 <img src="{{ url_for('static', filename='images/jeans')}}/{{product.image}}.jpg" class="img-responsive" alt="">
+						</div>
+					   <div class="cart-item-info">
+						<h2><a href="{{ url_for('single_id', id=product.id) }}"> {{ product.name }} </a></h2>
+						<ul class="qty">
+							<li><p>Price: ${{ product.get_price() }}</p></li>
+							<div class="col-xs-2">
+										<input type="number" 
+											class="form-control 
+											product_quantity" 
+											value="{{ g.cart.
+												items[product.id|string].quantity }}"
+												min="1" max="{{ product.stock
+											   	}}">
+									</div>
+									<div class="col-xs-2">
+										<button type="button" 
+											class="btn btn-default btn-sm
+											update_cart">
+											Update	
+										</button>
+									</div>
+									<div class="col-xs-2">
+										<button type="button"
+											class="btn btn-danger btn-sm
+											delete_from_cart">
+											Delete
+										</button>
+									</div>
+							<li><p>FREE delivery</p></li>
+							<li><p>Total: ${{  product.get_price() * g.cart.items['2'].quantity }}</p></li>
+						</ul>
+							 
+							 <p></p>
+
+							 <div class="clearfix"></div>    
+				        </div>	
+					   </div>
+					   <div class="clearfix"></div>
+											
+				  </div>
+				{% endfor %}
+<div class="col-xs-7">
+	Total:
+	<span class="badge order_total">
+		0
+	</span>
+</div>				
+				
+<script type="text/javascript">
+		function updateTotal() {
+			$.post('get_cart_total', {}).done(function(data) {
+				$('.order_total').text(data.total);
+			});
+		}
+		$(document).ready(function() {
+			// update the cart when load te page;
+			updateTotal();
+			$('.update_cart').click(function(event) {
+				var quantity = $(event.target).closest('div.row').
+					find('input[type="number"].product_quantity').val();
+				var productId = $(event.target).closest('div.row').attr('id');
+				
+					$.ajax({
+						url: 'http://' + document.domain + ':' + 
+							location.port + '/update_cart',
+						type: "POST",
+						data: {
+							id: productId,
+							quantity: quantity
+						},
+						xhrFields: {
+							withCredentials: true
+						}
+					})
+					.done(function(data) {
+						// Now update the total price of that product
+						$(event.target).closest('div.row').
+							find('div.product_total').
+							find('span').text(data.total);
+						alert("Cantitatea a fost modificata cu succes");
+					});	
+					updateTotal();
+				}
+			});
+			$('.delete_from_cart').click(function(event) {
+				var productId = $(event.target).closest('div.row').attr('id');
+				$.post('delete_from_cart', {id: productId}).done(function() {
+					alert('Produsul a fost sters cu success');
+					location.reload();
+				});
+						
+			});
+			$('.place_order').click(function(event) {
+				
+			});
+			$('#send_order').click(function(event) {
+
+				}).done(function(data) {
+					if(data.errors === undefined) {
+					});
+					}
+					else {
+						alert(data.errors);
+					}
+				});
+			});
+					
+		});
+	</script>
+	
+				<div class="col-md-10" style="padding-top: 10%;">
+					{% if current_user.is_authenticated == False %}
+						<h2>Please, <a href="{{ url_for('login') }}">login or signup</a> to make an order.</h2>
+					{% else %}
+					{% if not is_empty %}
+						<button type="submit" style="	border: 2px solid #000;
+																				color: #000;
+																				font-size: 1.2em;
+																				padding: 0.6em 2em;
+																				text-transform: uppercase;
+																				cursor: pointer;
+																				background-color: #fff;	">create an order</button>
+						
+											{% endif %}
+					{% endif %}
+				</div>
+			 </div>			 
+		 </div>
+	 </div>
+</div>
+{% endblock %}

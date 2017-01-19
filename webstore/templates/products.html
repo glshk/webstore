@@ -43,13 +43,13 @@ Products
 							<img src="{{ url_for('static', filename='images/jeans')}}/{{product.image}}.jpg" class="img-responsive" alt="">
 							<div class="b-wrapper">
 							<h4 class="b-animate b-from-left  b-delay03">							
-							<button> + </button>
+							<button> see more </button>
 							</h4>
 							</div>
 						</div>
 					</a>					
 						<div class="product-info simpleCart_shelfItem">
-							<div class="product-info-cust prt_name">
+							<div class="product-info-cust prt_name" id='{{ product.id }}'>
 								<h4>Product "{{ product.name }}"</h4>								
 								<span class="item_price">${{ prices[(product.id-1)%(prices|length)] }}<!-- ₴ --></span>
 								<!--
@@ -58,13 +58,26 @@ Products
 						          <p class="disc">[12% Off]</p>
 								</div>
 								-->
-								<input type="text" class="item_quantity" value="1" />
-								<input type="button" class="item_add items" value="+">
+								<!-- <input type="text" class="item_quantity" value="1" /> -->
+								<input type="button" class="item_add add_to_cart" style="margin:0px 0 0px 35%;" value="Add to cart">
 								<div class="clearfix"> </div>
 							</div>												
 						</div>
 					</div>
 				{% endfor %} 	
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".add_to_cart").click(function(event) {
+					var id = $(event.target).closest("div").attr("id");
+					$.post("{{ url_for('addToCart') }}", {
+						productId: id, 
+					}).done(function(data) {
+						alert("Successfully added a product to cart")
+					});				
+				});
+			});
+		</script>
+		
 				</div>	
 				{% block menu %}
 			<div class="rsidebar span_1_of_left">
