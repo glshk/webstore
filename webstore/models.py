@@ -47,6 +47,14 @@ class User(db.Model):
     def __repr__(self):
         return 'User %s %s' % (self.first_name, self.last_name)
 
+    def get_username(self):
+        username = UserAuth.query.join(User.user_auth).filter(self.id==UserAuth.user_id).first().username
+        return username
+
+    def get_role(self):
+        # roles
+        role = self.roles[0].name
+        return (role)
 
 
 class UserRoles(db.Model):
@@ -75,6 +83,10 @@ class Order(db.Model):
 
     def __repr__(self):
         return 'Order number %d by %r' % (self.oid, self.user)
+
+    def get_user(self):
+        user = User.query.join(Order.user).filter(User.id==self.user_id).first().first_name
+        return user
 
 class Brand(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

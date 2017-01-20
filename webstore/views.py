@@ -265,12 +265,14 @@ def admin():
 
 @app.route('/admin/users', methods = ['GET', 'POST'])
 def admin_users():
-    pass
+    users = User.query.all()
+    return render_template('admin/users.html', users=users)
 
 @app.route('/admin/products', methods = ['GET', 'POST'])
 def admin_products():
-    pass
+    return render_template('/admin/products.html')
 
 @app.route('/admin/orders', methods = ['GET', 'POST'])
 def admin_orders():
-    pass
+    orders = Order.query.all()
+    return render_template('/admin/orders.html', orders=orders)

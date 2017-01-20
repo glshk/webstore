@@ -9,9 +9,9 @@
 				<div class="single-grids">
 					<div class="col-md-4 single-grid1">
 							<ul>
-								<li><a href=#>Users</a></li>
-								<li><a href=#>Products</a></li>
-								<li><a href=#>Orders</a></li>
+								<li><a href="{{ url_for('admin_users') }}">Users</a></li>
+								<li><a href="{{ url_for('admin_products') }}">Products</a></li>
+								<li><a href="{{ url_for('admin_orders') }}">Orders</a></li>
 								
 								<li><a href=#>newsletter</a></li>
 								<li><a href=#>recurring payments</a></li>
@@ -19,17 +19,24 @@
 					</div>
 <!--/-->					
 					<div class="col-md-8 single-grid1">
+							{% block items %}
 							<ul>
-								<li><a href=# class=''>Item (edit)</a></li>
+							{% for item in items %}
+								<li><a href=# class=''>Item {{ item.id }} (edit)</a></li>
+									
 									<ul>
 									<li style='padding-left: 3em; padding-bottom: 0.5em; padding-top: 0.5em;'><h6>Name:</h6> Subitem</li>
 									<li style='padding-left: 3em; padding-bottom: 0.5em; padding-top: 0.5em;'><h6>Username:</h6> Subitem</li>
 									</ul>
-								<li><a href=#>Item</a></li>
-								<li><a href=#>Item</a></li>
-								<li><a href=#>Item</a></li>
-								<li><a href=#>Item</a></li>
+									
+							{% endfor %}		
+								<li>This page is visible only for users with admin role. 
+								<li>Please, do not abuse your authority. 
+								<li>Change/add information with care.
+								<li>Here you can change users' roles, add new supplies of products, mark orders as inactive and do some more useful things.</li>
+
 							</ul>
+							{% endblock %}
 					</div>
 <!--/-->
 				</div>
